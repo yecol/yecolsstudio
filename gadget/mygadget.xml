@@ -1,7 +1,122 @@
-<?xml version="1.0" encoding="UTF-8"?> 
-<Module> 
-<ModulePrefs title="hello world example" /> 
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+<ModulePrefs title="单词检测" author="yecol" height="300" scrolling="true">
+<Require feature="setprefs" />
+</ModulePrefs>
+<UserPref name="height" display_name="高度" default_value="520" datatype="enum" >
+<EnumValue value="100" display_value="100px" />
+<EnumValue value="300" display_value="300px" />
+<EnumValue value="520" display_value="500px" />
+</UserPref>
+<UserPref name="url" default_value="http://xujb1987.appspot.com/operate?toCheck=" datatype="string"/>
+<UserPref name="article" default_value="Americans use lots of expressions" datatype="string"/>
 <Content type="html">
-<![CDATA[ <script language="javascript">  alert("世界好啊！哈哈"); </script> ]]>
-</Content> 
-</Module>
+<![CDATA[
+<style>
+.c4{
+color:blue;
+}
+.c6{
+color:green;
+}
+</style>
+
+<script>
+
+var preurl="http://xujb1987.appspot.com/operate?toCheck=";
+var prefs = new _IG_Prefs(__MODULE_ID__);
+function onload(){_IG_AdjustIFrameHeight();}
+
+
+function setData()
+{
+try{
+
+var astro=prefs.getString("article");
+astro=astro.replace(/'/g, " yecols.cn.s");
+astro=astro.replace(/"/g, " yecols.cn.d");
+//alert("astro:"+astro);
+var url=_hesc(preurl+_esc(astro));
+//alert(url);
+_IG_FetchContent(url, callback);
+}
+catch(e)
+{
+alert('文本返回失败.');
+}
+}
+function callback(responseText) {
+
+//alert("backString "+responseText);
+responseText=responseText.replace(/ yecols.cn.s/g,"'");
+responseText=responseText.replace(/ yecols.cn.d/g,'"');
+
+var indexbegin=responseText.indexOf("<div id='returnArticle'>");
+var indexend=responseText.indexOf("<span id='wordsNum4'>");
+
+var index4begin=responseText.indexOf("<span id='wordsNum4'>");
+var index4end=responseText.indexOf("<span id='wordsNum6'>");
+
+var index6begin=responseText.indexOf("<span id='wordsNum6'>");
+var index6end=responseText.length;
+
+var text=responseText.substring(indexbegin,indexend);
+var num4=responseText.substring(index4begin,index4end);
+var num6=responseText.substring(index6begin,index6end);
+
+
+
+
+//alert(text);
+//alert(num4);
+//alert(num6);
+
+document.myform.article.value="";
+document.getElementById('tbhome').innerHTML = "<p align='center'><span class='c4'>蓝色</span>标记四级单词："+num4+"个<br><span class='c6'>绿色</span>标记六级单词："+num6+"个</p>"+text+"<p align='center'><font size=2pt>注意：本工具仅提供参考,单词判定不严格准确。<br>Copyright <a href='http://yecols.cn'>Yecols.cn</a></font></p>";
+}
+
+
+function setMyAstro()
+{
+var article="This initiallized string.";
+var boo=false;
+prefs.set("url","http://xujb1987.appspot.com/operate?toCheck=");
+if(document.myform.article.value.length>950||document.myform.article.value==""){
+alert("输入文本请在1000字符以内");
+document.myform.article.focus();
+}else{
+boo=true;}
+
+
+if(boo){
+
+prefs.set("article",document.myform.article.value);
+
+setData();
+}
+}
+function display(str)
+{
+document.write(str);
+}
+</script>
+
+<body onload="onload();">
+
+<center>Mark Words in CET4 or CET6<br><font size=2pt>将文章复制到文本框中，提交后标记其中的四六级单词。</font>
+<hr>
+</center>
+<div align="center">
+<form name="myform">
+<textarea name="article" style="width:90%" length="5"></textarea><br>
+
+<input type=reset value="清空" name="reset">
+<input type=button value="提交" name="submit" onClick="setMyAstro();">
+</form>
+</div>
+<hr>
+<div id="tbhome">请在文本框输入英文原文
+</div>
+</body>
+]]></Content></Module>
+
