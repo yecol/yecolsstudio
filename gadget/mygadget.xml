@@ -102,7 +102,7 @@ document.write(str);
 
 <body onload="onload();">
 
-<center><strong>Mark Words in CET4 or CET6<strong><br><font size=2pt>将文章复制到文本框中，提交后标记其中的四六级单词。</font>
+<center><strong>Mark Words in CET4 or CET6</strong><br><font size=2pt>将文章复制到文本框中，提交后标记其中的四六级单词。</font>
 <hr>
 </center>
 <div align="center">
