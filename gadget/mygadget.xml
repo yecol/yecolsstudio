@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
-	<ModulePrefs title="单词检测" author="yecol scrolling=" true ">
+	<ModulePrefs title="单词检测" author="yecol" scrolling=" true ">
 		<Require feature="setprefs" />
 	</ModulePrefs>
 	<UserPref name="height" display_name="高度" default_value="520"
