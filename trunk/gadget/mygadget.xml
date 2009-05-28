@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
-	<ModulePrefs title="单词检测" author="yecol" scrolling=" true ">
+	<ModulePrefs title="单词检测" author="yecol" scrolling="true">
+	    <Require feature="dynamic-height" /> 
 		<Require feature="setprefs" />
 	</ModulePrefs>
 	<UserPref name="height" display_name="高度" default_value="520"
@@ -9,6 +10,8 @@
 		<EnumValue value="300" display_value="300px" />
 		<EnumValue value="520" display_value="500px" />
 	</UserPref>
+	<UserPref name="url" default_value="http://xujb1987.appspot.com/operate?toCheck=" datatype="string"/>
+    <UserPref name="article" default_value="Americans use lots of expressions" datatype="string"/>
 	<Content type="html">
 <![CDATA[
 <style>
