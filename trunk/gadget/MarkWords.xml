@@ -57,7 +57,7 @@
            * 特殊字符逆处理
            */
           responseText=responseText.replace(/ yecols.cn.s/g,"'");
-          responseText=responseText.replace(/ yecols.cn.d/g,'"');
+          responseText=responseText.replace(/ yecols.cn.d/g,"\"");
           /**
            * 获得着色后文本起讫位置
            */
