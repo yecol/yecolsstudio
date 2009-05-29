@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
 	<ModulePrefs title="单词检测" author="yecol" scrolling="true">
-	    <Require feature="dynamic-height" /> 
 		<Require feature="setprefs" />
 	</ModulePrefs>
 	<UserPref name="height" display_name="高度" default_value="520"
@@ -24,15 +23,12 @@ color:green;
 <script>
 
 var preurl="http://xujb1987.appspot.com/operate?toCheck=";
-var prefs = new _IG_Prefs(__MODULE_ID__);
-function onload(){_IG_AdjustIFrameHeight();}
 
 
-function setData()
+function setData(astro)
 {
 try{
 
-var astro=prefs.getString("article");
 astro=astro.replace(/'/g, " yecols.cn.s");
 astro=astro.replace(/"/g, " yecols.cn.d");
 //alert("astro:"+astro);
@@ -65,12 +61,6 @@ var num4=responseText.substring(index4begin,index4end);
 var num6=responseText.substring(index6begin,index6end);
 
 
-
-
-//alert(text);
-//alert(num4);
-//alert(num6);
-
 document.myform.article.value="";
 document.getElementById('tbhome').innerHTML = "<p align='center'><span class='c4'>蓝色</span>标记四级单词："+num4+"个<br><span class='c6'>绿色</span>标记六级单词："+num6+"个</p>"+text+"<p align='center'><font size=2pt>注意：本工具仅提供参考,单词判定不严格准确。<br>Copyright <a href='http://yecols.cn'>Yecols.cn</a></font></p>";
 }
@@ -78,11 +68,10 @@ document.getElementById('tbhome').innerHTML = "<p align='center'><span class='c4
 
 function setMyAstro()
 {
-var article="This initiallized string.";
+var article="";
 var boo=false;
-prefs.set("url","http://xujb1987.appspot.com/operate?toCheck=");
 if(document.myform.article.value.length>950||document.myform.article.value==""){
-alert("输入文本请在1000字符以内");
+alert("输入文本请在1-1000字符以内");
 document.myform.article.focus();
 }else{
 boo=true;}
@@ -90,18 +79,12 @@ boo=true;}
 
 if(boo){
 
-prefs.set("article",document.myform.article.value);
-
-setData();
+setData(document.myform.article.value);
 }
-}
-function display(str)
-{
-document.write(str);
 }
 </script>
 
-<body onload="onload();">
+<body>
 
 <center><strong>Mark Words in CET4 or CET6</strong><br><font size=2pt>将文章复制到文本框中，提交后标记其中的四六级单词。</font>
 <hr>
