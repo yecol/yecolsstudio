@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
-	<ModulePrefs title="单词检测" author="yecol">
-		<Require feature="dynamic-height"/>
+	<ModulePrefs title="单词检测" author="yecol" height="300" scrolling="true">
+		
 	</ModulePrefs>
-	<UserPref name="height" display_name="高度" default_value="520"
-		datatype="enum">
-		<EnumValue value="100" display_value="100px" />
-		<EnumValue value="300" display_value="300px" />
-		<EnumValue value="520" display_value="500px" />
-	</UserPref>
+	
 	<Content type="html">
 <![CDATA[
 <style>
@@ -90,8 +85,7 @@ setData(document.myform.article.value);
 }
 </script>
 
-<body><table border="0" height="__UP_height__">
-<script>alert(__UP_height__);</script>
+<body>
 
 <center><strong>Mark Words in CET4 or CET6</strong><br><font size=2pt>将文章复制到文本框中，提交后标记其中的四六级单词。</font>
 <hr>
@@ -106,7 +100,7 @@ setData(document.myform.article.value);
 </div>
 <hr>
 <div id="tbhome">请在文本框输入英文原文
-</div></table>
+</div>
 </body>
 ]]></Content>
 </Module>
