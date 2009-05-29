@@ -27,13 +27,19 @@
         /**
          * 根据传入字符传组装URL地址并发往后台，并处理返回信息，显示到页面的DIV中。
          */
-        function setData(astro){
+        function setData(rawArticle){
           try{
-            astro=astro.replace(/'/g, " yecols.cn.s");
-            astro=astro.replace(/"/g, " yecols.cn.d");
-            //alert("astro:"+astro);
+            /**
+             * 特殊字符处理
+             */            
+            rawArticle=rawArticle.replace(/'/g, " yecols.cn.s");
+            rawArticle=rawArticle.replace(/"/g, " yecols.cn.d");
+            //alert("rawArticle:"+rawArticle);
             
-            var url=_hesc(preurl+_esc(astro));
+            /**
+             * 合成URL并发送到后台处理
+             */  
+            var url=_hesc(preurl+_esc(rawArticle));
             //alert(url);
             _IG_FetchContent(url, callback);
           }catch(e){
@@ -42,34 +48,47 @@
         }
 
        /**
-         * 根据传入字符传组装URL地址并发往后台，并处理返回信息，显示到页面的DIV中。
+         * 回传字符串的处理，分拣文本。
          */
         function callback(responseText) {
           //alert("backString "+responseText);
+          /**
+           * 特殊字符逆处理
+           */
           responseText=responseText.replace(/ yecols.cn.s/g,"'");
           responseText=responseText.replace(/ yecols.cn.d/g,'"');
-
+          /**
+           * 获得着色后文本起讫位置
+           */
           var indexbegin=responseText.indexOf("<div id='returnArticle'>");
           var indexend=responseText.indexOf("<span id='wordsNum4'>");
-          
+          /**
+           * 获得四级词个数起讫位置
+           */
           var index4begin=responseText.indexOf("<span id='wordsNum4'>");
           var index4end=responseText.indexOf("<span id='wordsNum6'>");
-
+          /**
+           * 获得六级词个数起讫位置
+           */
           var index6begin=responseText.indexOf("<span id='wordsNum6'>");
           var index6end=responseText.length;
-
+          /**
+           * 截取文本
+           */
           var text=responseText.substring(indexbegin,indexend);
           var num4=responseText.substring(index4begin,index4end);
           var num6=responseText.substring(index6begin,index6end);
-
+          /**
+           * 清空文本框并填入处理后信息
+           */
           document.myform.article.value="";
           document.getElementById('tbhome').innerHTML = "<p align='center'><span class='c4'>蓝色</span>标记四级单词："+num4+"个<br><span class='c6'>绿色</span>标记六级单词："+num6+"个</p>"+text+"<p align='center'><font size=2pt>注意：本工具仅提供参考,单词判定不严格准确。<br>Copyright <a href='http://yecols.cn'>Yecols.cn</a></font></p>";
         }
 
        /**
-         * 根据传入字符传组装URL地址并发往后台，并处理返回信息，显示到页面的DIV中。
+         * 表单提交触发函数，并检测输入合法性
          */
-        function setMyAstro(){
+        function setRawArticle(){
           var article="";
           var boo=false;
           
@@ -96,7 +115,7 @@
          <form name="myform">
            <textarea name="article" style="width:90%" length="5"></textarea><br>
            <input type=reset value="清空" name="reset">
-           <input type=button value="提交" name="submit" onClick="setMyAstro();">
+           <input type=button value="提交" name="submit" onClick="setRawArticle();">
          </form>
        </div>
        <hr>
