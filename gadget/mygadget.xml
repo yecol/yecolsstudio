@@ -94,7 +94,7 @@
           var boo=false;
           
           if(document.myform.article.value.length>950||document.myform.article.value==""){
-            alert("输入文本请在1-1000字符以内");
+            alert("输入文本请在1-1000字符以内\nyecols.cn");
             document.myform.article.focus();
           }else{
             boo=true;
