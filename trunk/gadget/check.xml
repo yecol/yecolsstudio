@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+<ModulePrefs title="每日星座运势" author="ShrewdWolf@Cherry#NJUPT$Abroad">
+<Require feature="dynamic-height" /> 
+<Require feature="setprefs" /> 
+</ModulePrefs>
+<UserPref name="height" display_name="高度" default_value="300" datatype="enum" > 
+<EnumValue value="100" display_value="100px" /> 
+<EnumValue value="300" display_value="300px" /> 
+<EnumValue value="520" display_value="500px" />
+</UserPref>
+<UserPref name="url" default_value="http://act1.astro.women.sohu.com/yuncheng_xingzuo_new.php?type=d&amp;xingzuo=" datatype="string"/>
+<UserPref name="no" default_value="10" datatype="string"/>
+<UserPref name="astroname" default_value="摩羯座" datatype="string"/>
+<UserPref name="dayname" default_value="今天" datatype="string"/>
+<Content type="html">
+<![CDATA[
+<script>
+var preurl="http://act1.astro.women.sohu.com/yuncheng_xingzuo_new.php?type=d";
+var prefs = new _IG_Prefs(__MODULE_ID__);
+var astro=prefs.getString("no");
+function onload(){_IG_AdjustIFrameHeight();}
+function init()
+{
+try
+{  
+//var url="http://act1.astro.women.sohu.com/yuncheng_xingzuo_new.php?type=d&xingzuo=10";
+var url=prefs.getString("url")+prefs.getString("no");
+_IG_FetchContent(url, callback);  
+var day=document.getElementById('SelectDay');
+var as=document.getElementById('SelectAstro');
+var also1=prefs.getString("dayname");
+var also2=prefs.getString("astroname");
+for(var i=0;i<3;++i)
+{
+  var option=day.options[i];
+  if(option.text==also1)
+  {
+    day.selectedIndex=i;
+    break;
+  }
+}
+for(var i=0;i<12;++i)
+{
+  var option=as.options[i];
+  if(option.text==also2)
+  {
+    as.selectedIndex=i;
+    break;
+  }
+}
+}
+catch(e)
+   {
+    alert('ERROR01: 获取星座信息失败.'+e);
+   }
+}
+function setData()
+{ 
+//alert(astro);
+try
+{  
+var url=preurl+astro;
+//alert(url); 
+_IG_FetchContent(url, callback);  
+}
+catch(e)
+   {
+    alert('ERROR01: 获取星座信息失败.');
+   }
+}
+
+function callback(responseText) {
+
+    if (responseText == null || responseText == ""){
+        alert("ERROR02: 没有更新的星座信息.");
+  }else
+{
+//alert(responseText);
+var indexbegin=responseText.indexOf('<td class=wz12_3B07>');
+var text=responseText.substring(indexbegin,responseText.length-1);
+var indexend=text.indexOf('</tr>');
+document.getElementById('tbhome').innerHTML = "<p align='center'><img src='http://daily-gadget.googlecode.com/svn/trunk/"+astro+".gif' border=0></p><hr>"+text.substring(0,indexend)+"<hr>";
+}
+}
+
+function UpdateAstro(obj)
+{
+  var day=document.getElementById('SelectDay');
+  preurl="http://act1.astro.women.sohu.com/yuncheng_xingzuo_new.php?type=d"+day.options[day.selectedIndex].value;
+  astro=obj.options[obj.selectedIndex].value;
+  setData();
+}
+function UpdateDay(obj)
+{
+  preurl="http://act1.astro.women.sohu.com/yuncheng_xingzuo_new.php?type=d"+obj.options[obj.selectedIndex].value;
+  var as=document.getElementById('SelectAstro');
+  astro=as.options[as.selectedIndex].value;
+  setData();
+}
+function setMyAstro()
+{
+  var day=document.getElementById('SelectDay');
+  var as=document.getElementById('SelectAstro');
+  prefs.set("url","http://act1.astro.women.sohu.com/yuncheng_xingzuo_new.php?type=d"+day.options[day.selectedIndex].value);
+  prefs.set("no",as.options[as.selectedIndex].value);
+  prefs.set("astroname",as.options[as.selectedIndex].text);
+  prefs.set("dayname",day.options[day.selectedIndex].text);
+  alert("成功定制: "+prefs.getString("dayname")+","+prefs.getString("astroname"));
+  //alert(prefs.getString("astroname")+"\n"+prefs.getString("dayname"));
+}
+function display(str)
+{
+  document.write(str);
+}
+</script>
+<body  onload="onload();init();">
+<center>每日星座运势(Yours Daily Horoscope)<br>(<font size=2pt>注意：本工具仅提供娱乐,星座信息来自搜狐</font>)
+<hr>
+<iframe width='280' height='24' marginwidth='0' marginheight='0' hspace='0' vspace='0' frameborder='0' scrolling='No' src='http://m.weather.com.cn/m/p3/weather1.htm' name="I6"></iframe>
+</center>
+<p align="center">请选择要查询的星座: 
+<select id="SelectDay" onchange="UpdateDay(this);">
+<option value="&xingzuo=" selected>今日</option>
+<option value="&day_select=tomorrow&xingzuo=">明日</option>
+<option value="&day_select=yesterday&xingzuo=">昨日</option>
+</select>
+
+<select id="SelectAstro" onchange="UpdateAstro(this);">
+<option value="10" selected>&#x6469;&#x7FAF;&#x5EA7;</option> 
+<option value='11'>&#x6C34;&#x74F6;&#x5EA7;</option> 
+<option value='12'>&#x53CC;&#x9C7C;&#x5EA7;</option> 
+<option value='1'>&#x767D;&#x7F8A;&#x5EA7;</option> 
+<option value='2'>&#x91D1;&#x725B;&#x5EA7;</option> 
+<option value='3'>&#x53CC;&#x5B50;&#x5EA7;</option> 
+<option value='4'>&#x5DE8;&#x87F9;&#x5EA7;</option> 
+<option value='5'>&#x72EE;&#x5B50;&#x5EA7;</option>
+<option value='6'>&#x5904;&#x5973;&#x5EA7;</option>
+<option value='7'>&#x5929;&#x79E4;&#x5EA7;</option>
+<option value='8'>&#x5929;&#x874E;&#x5EA7;</option>
+<option value='9'>&#x5C04;&#x624B;&#x5EA7;</option>
+</select>
+
+&nbsp;<input type=button value="定制" name="reset" onClick="setMyAstro();">
+</p>
+<div id="tbhome">
+</div>
+</body>
+]]></Content></Module>
+
+
+
+
+
+
