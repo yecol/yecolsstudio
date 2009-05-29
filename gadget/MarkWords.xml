@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+	<ModulePrefs title="单词检测" 
+	             author="yecol" 
+	             title_url="http://xujb1987.appspot.com"
+	             author_email="xujb1987@gmail.com"
+	             author_link="http://yecols.cn"
+	             height="300"
+		         scrolling="true">
+	</ModulePrefs>
+	<Content type="html">
+       <![CDATA[
+       <style>
+         .c4{
+           color:blue;
+         }
+         .c6{
+           color:green;
+         }
+      </style>
+
+      <script>
+        /**
+         * 初始化变量,构建后台处理目标地址的前缀。
+         */
+        var preurl="http://xujb1987.appspot.com/operate?toCheck=";
+
+        /**
+         * 根据传入字符传组装URL地址并发往后台，并处理返回信息，显示到页面的DIV中。
+         */
+        function setData(rawArticle){
+          try{
+            /**
+             * 特殊字符处理
+             */            
+            rawArticle=rawArticle.replace(/'/g, " yecols.cn.s");
+            rawArticle=rawArticle.replace(/"/g, " yecols.cn.d");
+            //alert("rawArticle:"+rawArticle);
+            
+            /**
+             * 合成URL并发送到后台处理
+             */  
+            var url=_hesc(preurl+_esc(rawArticle));
+            //alert(url);
+            _IG_FetchContent(url, callback);
+          }catch(e){
+            alert('文本返回失败.');
+          }
+        }
+
+       /**
+         * 回传字符串的处理，分拣文本。
+         */
+        function callback(responseText) {
+          //alert("backString "+responseText);
+          /**
+           * 特殊字符逆处理
+           */
+          responseText=responseText.replace(/ yecols.cn.s/g,"'");
+          responseText=responseText.replace(/ yecols.cn.d/g,'"');
+          /**
+           * 获得着色后文本起讫位置
+           */
+          var indexbegin=responseText.indexOf("<div id='returnArticle'>");
+          var indexend=responseText.indexOf("<span id='wordsNum4'>");
+          /**
+           * 获得四级词个数起讫位置
+           */
+          var index4begin=responseText.indexOf("<span id='wordsNum4'>");
+          var index4end=responseText.indexOf("<span id='wordsNum6'>");
+          /**
+           * 获得六级词个数起讫位置
+           */
+          var index6begin=responseText.indexOf("<span id='wordsNum6'>");
+          var index6end=responseText.length;
+          /**
+           * 截取文本
+           */
+          var text=responseText.substring(indexbegin,indexend);
+          var num4=responseText.substring(index4begin,index4end);
+          var num6=responseText.substring(index6begin,index6end);
+          /**
+           * 清空文本框并填入处理后信息
+           */
+          document.myform.article.value="";
+          document.getElementById('tbhome').innerHTML = "<p align='center'><span class='c4'>蓝色</span>标记四级单词："+num4+"个<br><span class='c6'>绿色</span>标记六级单词："+num6+"个</p>"+text+"<p align='center'><font size=2pt>注意：本工具仅提供参考,单词判定不严格准确。<br>Copyright <a href='http://yecols.cn'>Yecols.cn</a></font></p>";
+        }
+
+       /**
+         * 表单提交触发函数，并检测输入合法性
+         */
+        function setRawArticle(){
+          var article="";
+          var boo=false;
+          
+          if(document.myform.article.value.length>950||document.myform.article.value==""){
+            alert("输入文本请在1-1000字符以内\nyecols.cn");
+            document.myform.article.focus();
+          }else{
+            boo=true;
+          }
+
+          if(boo){
+            setData(document.myform.article.value);
+          }
+        }
+      </script>
+
+      <body>
+       <center>
+         <strong>Mark Words in CET4 or CET6</strong><br>
+         <font size=2pt>将文章复制到文本框中，提交后标记其中的四六级单词。</font>
+         <hr>
+       </center>
+       <div align="center">
+         <form name="myform">
+           <textarea name="article" style="width:90%" length="5"></textarea><br>
+           <input type=reset value="清空" name="reset">
+           <input type=button value="提交" name="submit" onClick="setRawArticle();">
+         </form>
+       </div>
+       <hr>
+       <div id="tbhome">请在文本框输入英文原文</div>
+      </body>
+       ]]></Content>
+</Module>
