@@ -91,6 +91,7 @@ setData(document.myform.article.value);
 </script>
 
 <body><table border="0" height="__UP_height__">
+<script>alert(__UP_height__);</script>
 
 <center><strong>Mark Words in CET4 or CET6</strong><br><font size=2pt>将文章复制到文本框中，提交后标记其中的四六级单词。</font>
 <hr>
